@@ -202,9 +202,9 @@ jobs:
                   node-version: ${{ matrix.config.node-version }}
                   cache: "npm"
             # - run: yum install -y gcc-c++
-            - run: apt update
-            - run: apt install -y tree
-            - run: apt install -y g++
+            - run: sudo apt update
+            - run: sudo apt install -y tree
+            - run: sudo apt install -y g++
             - run: ldd --version
             - run: npm ci --build-from-source
             - run: npm run package 2>&1
