@@ -213,7 +213,8 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ github.token }}
               with:
-                  asset_paths: '["./build/stage/libxmljs/libxmljs/releases/download/**/*.tar.gz"]'
+                  # asset_paths: '["./build/stage/libxmljs/libxmljs/releases/download/**/*.tar.gz"]'
+                  asset_paths: '["Release/xmljs.node"]'
 
     # upload-arm-builds:
     #     strategy:
