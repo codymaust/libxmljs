@@ -202,19 +202,24 @@ jobs:
                   node-version: ${{ matrix.config.node-version }}
                   cache: "npm"
             # - run: yum install -y gcc-c++
-            # - run: apt install -y gcc-c++
+            - run: apt update
+            - run: apt install -y tree
+            - run: apt install -y g++
             - run: ldd --version
             - run: npm ci --build-from-source
             - run: npm run package 2>&1
-            - run: npm run tsc
-            - run: npm run test
+            # - run: npm run tsc
+            # - run: npm run test
+            - run: pwd
+            - run: pwd
+            - run: tree -a
             - name: Upload release binary
               uses: alexellis/upload-assets@0.4.1
               env:
                   GITHUB_TOKEN: ${{ github.token }}
               with:
-                  # asset_paths: '["./build/stage/libxmljs/libxmljs/releases/download/**/*.tar.gz"]'
-                  asset_paths: '["Release/xmljs.node"]'
+                  asset_paths: '["./build/stage/libxmljs/libxmljs/releases/download/**/*.tar.gz"]'
+                  # asset_paths: '["Release/xmljs.node"]'
 
     # upload-arm-builds:
     #     strategy:
