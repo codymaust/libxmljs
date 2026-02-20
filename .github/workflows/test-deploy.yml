@@ -172,18 +172,18 @@ jobs:
                     - { node-version: 22 }
                     - { node-version: 24 }
                 container-image: [x86_64]
-        container:
-            image: quay.io/pypa/manylinux_2_28_${{ matrix.container-image }}
-            env:
-                PATH: /opt/python/cp36-cp36m/bin:/opt/python/cp37-cp37m/bin:/opt/python/cp38-cp38/bin:/opt/rh/devtoolset-2/root/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/python/cp35-cp35m/bin:/opt/python/cp36-cp36m/bin:/opt/python/cp37-cp37m/bin:/opt/python/cp38-cp38/bin:/opt/python/cp39-cp39/bin:/opt/rh/devtoolset-8/root/usr/bin
-            options: --user root
+        # container:
+        #     image: quay.io/pypa/manylinux_2_28_${{ matrix.container-image }}
+        #     env:
+        #         PATH: /opt/python/cp36-cp36m/bin:/opt/python/cp37-cp37m/bin:/opt/python/cp38-cp38/bin:/opt/rh/devtoolset-2/root/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/python/cp35-cp35m/bin:/opt/python/cp36-cp36m/bin:/opt/python/cp37-cp37m/bin:/opt/python/cp38-cp38/bin:/opt/python/cp39-cp39/bin:/opt/rh/devtoolset-8/root/usr/bin
+        #     options: --user root
         steps:
             - uses: actions/checkout@v4
               with:
                   persist-credentials: false
                   submodules: true
             - run: apt update
-            - run: apt install libc6
+            - run: apt install -y libc6
             - name: Force Python 3.10 (newer versions do not work with node-gyp version bundled with node v12)
               uses: actions/setup-python@v6
               with:
@@ -202,7 +202,8 @@ jobs:
               with:
                   node-version: ${{ matrix.config.node-version }}
                   cache: "npm"
-            - run: yum install -y gcc-c++
+            # - run: yum install -y gcc-c++
+            - run: apt install -y gcc-c++
             - run: ldd --version
             - run: npm ci --build-from-source
             - run: npm run package 2>&1
