@@ -182,28 +182,27 @@ jobs:
               with:
                   persist-credentials: false
                   submodules: true
-            - run: apt update
-            - run: apt install -y libc6
-            - name: Force Python 3.10 (newer versions do not work with node-gyp version bundled with node v12)
-              uses: actions/setup-python@v6
-              with:
-                  python-version: "3.10"
-            - name: Point node-gyp at Python
-              run: |
-                  echo "PYTHON=${pythonLocation}/bin/python3" >> "$GITHUB_ENV"
-                  echo "npm_config_python=${pythonLocation}/bin/python3" >> "$GITHUB_ENV"
-            - run: |
-                  which python3 || true
-                  python3 --version || true
-                  echo "pythonLocation=$pythonLocation"
-                  ls -la "$pythonLocation/bin" | head
+            # - run: apt install -y libc6
+            # - name: Force Python 3.10 (newer versions do not work with node-gyp version bundled with node v12)
+            #   uses: actions/setup-python@v6
+            #   # with:
+            #   #     python-version: "3.10"
+            # - name: Point node-gyp at Python
+            #   run: |
+            #       echo "PYTHON=${pythonLocation}/bin/python3" >> "$GITHUB_ENV"
+            #       echo "npm_config_python=${pythonLocation}/bin/python3" >> "$GITHUB_ENV"
+            # - run: |
+            #       which python3 || true
+            #       python3 --version || true
+            #       echo "pythonLocation=$pythonLocation"
+            #       ls -la "$pythonLocation/bin" | head
             - name: Use Node.js ${{ matrix.config.node-version }}
               uses: actions/setup-node@v6
               with:
                   node-version: ${{ matrix.config.node-version }}
                   cache: "npm"
             # - run: yum install -y gcc-c++
-            - run: apt install -y gcc-c++
+            # - run: apt install -y gcc-c++
             - run: ldd --version
             - run: npm ci --build-from-source
             - run: npm run package 2>&1
