@@ -178,12 +178,14 @@ jobs:
                 PATH: /opt/python/cp36-cp36m/bin:/opt/python/cp37-cp37m/bin:/opt/python/cp38-cp38/bin:/opt/rh/devtoolset-2/root/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/python/cp35-cp35m/bin:/opt/python/cp36-cp36m/bin:/opt/python/cp37-cp37m/bin:/opt/python/cp38-cp38/bin:/opt/python/cp39-cp39/bin:/opt/rh/devtoolset-8/root/usr/bin
             options: --user root
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
               with:
                   persist-credentials: false
                   submodules: true
+            - run: apt update
+            - run: apt install libc6
             - name: Force Python 3.10 (newer versions do not work with node-gyp version bundled with node v12)
-              uses: actions/setup-python@v2
+              uses: actions/setup-python@v6
               with:
                   python-version: "3.10"
             - name: Point node-gyp at Python
@@ -196,7 +198,7 @@ jobs:
                   echo "pythonLocation=$pythonLocation"
                   ls -la "$pythonLocation/bin" | head
             - name: Use Node.js ${{ matrix.config.node-version }}
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v6
               with:
                   node-version: ${{ matrix.config.node-version }}
                   cache: "npm"
@@ -207,7 +209,7 @@ jobs:
             - run: npm run tsc
             - run: npm run test
             - name: Upload release binary
-              uses: alexellis/upload-assets@0.3.0
+              uses: alexellis/upload-assets@0.4.1
               env:
                   GITHUB_TOKEN: ${{ github.token }}
               with:
